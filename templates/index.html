@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h3 class="title is-3">Index</h3>
+  <p>Hello user number {{user_id}}</p>
+  <ul>
+    <li><a href="/"> / </a></li>
+    <li><a href="/auth/login/">/auth/login/</a></li>
+    <li><a href="/auth/logout/">/auth/logout/</a></li>
+  </ul>
+</section>
+{% endblock %}

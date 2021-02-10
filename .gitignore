@@ -1,0 +1,14 @@
+# These have multiple effects.
+
+# 1. git ignores the things listed here, of course.
+# 2. cargo watch also ignores them.
+# 3. search ignores them   
+
+# database directories
+/dbs
+
+# compilation artifacts
+/target
+
+# vscode preferences
+/.vscode

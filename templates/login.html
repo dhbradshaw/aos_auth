@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h3 class="title is-3">Login</h3>
+
+  <form class="form" method="post" action="/auth/login/">
+
+    <div class="field">
+      <label class="label" for="name">Email</label>
+      <div class="control">
+        <input class="input" type="text" id="email" name="email" required="true" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label" for="name">Password</label>
+      <div class="control">
+        <input class="input" type="password" id="password" name="password" required="true" />
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <button class="button is-link">Submit</button>
+      </div>
+    </div>
+
+  </form>
+</section>
+{% endblock %}
