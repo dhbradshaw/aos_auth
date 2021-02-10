@@ -1,8 +1,29 @@
 # AOS Auth: Authentication for Actix on Sled
 
-This repo attempts to show a reasonable pattern for building an app with an opaque session token authentication flow.
+## What AOS Auth?
+
+Actix is an amazingly fast http framework written in rust.
+Sled is a fast embedded key value store, also written in rust.
+
+Together they make an application that is
+
+- Deployable as a small, single binary for server and database,
+- Very fast, and
+- Flexible.
+
+However, the ecosystem is still very young.  
+As a result of that, I spent a fair amount of time figuring out how to do something as basic as authentication in this system.
+I created this repository to save me some time when I create the next server around these technologies and am sharing it with the hope of saving you time as well.
+
+## Why?
+
+It's an odd time in the history of the web because computers are becoming more and more powerful, and at the same time it's becoming more and more common to build distributed apps with perhaps tens or hundreds or thousands of virtual machines working in tandem.
+
+But it's also interesting to consider the other extreme.  If you use a single computer extremely efficiently, how far can you go and how reliable can you get?  At the very least, in doing this you can achieve a speed that just isn't possible in a distributed system, at least without compromising on consistency.  You can also remove a lot of complexity, which has its own maintenance cost, and reliability issues.  Actix on sled is one approach to exploring that second extreme.
 
 ## Notes on authentication
+
+This app provides an example of using an opaque session token authentication flow with actix on sled.
 
 - The token is saved in sled and points to a user_id.
 - Password hashing is handled by Argonautica, as used in `src/hashing.rs`
@@ -23,4 +44,56 @@ This repo attempts to show a reasonable pattern for building an app with an opaq
   - An unauthenticated view with simple template rendering using Askama takes 35-300 microseconds as reported in the logs.
   - The authenticated index view, which also uses an Askama template but this time with a user id, takes  ~35 to 300 microseconds as reported in the logs.
 
-I don't know what the variability comes from, and both seem to mostly be 35-70 microseconds but with occasional slow requests that take as much as 200 or 300 microseconds.  At any rate, it's fairly but could certainly be faster.  Also, the time associated with a single call to sled isn't easy to resolve with that much variability.
+I don't know what the variability comes from, and both seem to mostly be 35-70 microseconds but with occasional slow requests that take as much as 200 or 300 microseconds.  At any rate, it's fairly fast but could certainly be faster.  Also, the time associated with a single call to sled isn't easy to resolve with that much variability.
+
+## Usage
+
+### Install rust
+
+If you haven't already, [Install Rust](https://www.rust-lang.org/tools/install).
+
+### Clone this repository
+
+```bash
+git clone git@github.com:dhbradshaw/aos_auth.git
+```
+
+### Enter repository directly
+
+```bash
+cd aos_auth
+```
+
+### Create a new user
+
+```bash
+cargo run --bin newuser test@test.come testpassword
+```
+
+[The first time you run this, it will download and compile all the dependencies.  You'll be waiting a little bit!]
+
+### Start server
+
+```bash
+cargo run
+```
+
+### Open web browser
+
+Open your web browser to <http://127.0.0.1:7654>
+
+### Enter email and password
+
+If you want login to succeed, use an email and password that you entered using the newuser command above.
+
+### Take a look at your terminal
+
+You should see logging associated with each page request.  Times may be on the order of a millisecond.
+
+### Build release binary
+
+Times for the debugging version of the binary are slow on my laptop -- on the order of almost a millisecond per request.  If you want them to be 10 times as fast, create a slower but more optimized release build and try that.
+
+```bash
+cargo run --release
+```
